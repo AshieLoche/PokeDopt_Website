@@ -76,10 +76,6 @@
                         session_unset();
                         session_destroy();
                     }
-            
-                    // echo "<script>alert('$errorMessage');</script>";
-                    // header('Refresh: 0; URL=../pages/guest.php');
-                    // exit;
         
                 } else {
             
@@ -90,9 +86,6 @@
                     } else {
                         $_SESSION['userID'] = $user['0']['id'];
                     }
-
-                    // header('Refresh: 0; URL=../pages/pokedopt.php');
-                    // exit;
         
                 }
         
