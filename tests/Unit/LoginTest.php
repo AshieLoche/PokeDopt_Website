@@ -24,7 +24,7 @@
 
             $login = new App\Login;
             $result = $login->authenticate('wrongUser', 'password');
-            $this->assertEquals('Login failed', $result);
+            $this->assertEquals('Login owo', $result);
 
         }
 
