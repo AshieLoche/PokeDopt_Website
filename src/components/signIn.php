@@ -57,7 +57,7 @@
       <section class="modal-body">
 
         <!-- Sign In Modal Body Form -->
-        <form action="../components/signInProcess.php" id="signIn_form" method="POST">
+        <form action="../processes/signInProcess.php" id="signIn_form" method="POST">
           
           <!-- Sign In Modal Body Form Container -->
           <div class="container-fluid">

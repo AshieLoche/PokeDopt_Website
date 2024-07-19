@@ -185,7 +185,7 @@
                                     
                                     </button>
 
-                                    <form action="../components/logout.php" method="POST" class="p-0 m-0 d-flex align-items-center d-none" id="logout_form">
+                                    <form action="../processes/logoutProcess.php" method="POST" class="p-0 m-0 d-flex align-items-center d-none" id="logout_form">
                                         
                                         <!-- Header Nav PokéList Button -->
                                         <button class="navbar-toggler btn btn-outline-light p-2" tpye="submit" id="logout_btn" name="logout" value="logout" form="logout_form">

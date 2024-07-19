@@ -193,7 +193,7 @@
                                                         <!-- Pokémon Card Heart Button Span -->
                                                         <span class="col-2 col-lg-3 d-flex justify-content-end align-items-center p-0">
                                                         
-                                                            <form action="../components/likeProcess.php" method="POST">
+                                                            <form action="../processes/likeProcess.php" method="POST">
                                                                 
                                                                 <input type="hidden" name="pokemonID" value="<?php echo $pokemon['id']; ?>">
 
@@ -311,7 +311,7 @@
                       </section>
                       
 
-                      <form action="../components/add.php" method="POST" class="p-0"enctype="multipart/form-data" id="editProfile_Form">
+                      <form action="../processes/add.php" method="POST" class="p-0"enctype="multipart/form-data" id="editProfile_Form">
 
                         <section class="modal-body fw-bold p-0">
                             

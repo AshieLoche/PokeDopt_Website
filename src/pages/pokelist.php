@@ -125,7 +125,7 @@
                                     
                                   </section>
                                   
-                                  <form action="../components/likeProcess.php" method="POST" class="col-0 col-sm-4 rounded-end-5 d-flex justify-content-end align-items-center p-4">
+                                  <form action="../processes/likeProcess.php" method="POST" class="col-0 col-sm-4 rounded-end-5 d-flex justify-content-end align-items-center p-4">
                                     
                                     <input type="hidden" name="pokemonID" value="<?php echo $pokemon['id']; ?>">
                                     
@@ -190,7 +190,7 @@
                                           <section class="card-title display-3 fw-bolder text-light">
                                             <?php echo $pokemon['name']; ?>
                                           </section>
-                                          <form action="../components/likeProcess.php" method="POST" class="col-4 d-flex justify-content-end align-items-center">
+                                          <form action="../processes/likeProcess.php" method="POST" class="col-4 d-flex justify-content-end align-items-center">
                                             
                                             <input type="hidden" name="pokemonID" value="<?php echo $pokemon['id']; ?>">
                                             

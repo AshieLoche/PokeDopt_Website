@@ -58,7 +58,7 @@
                             <!-- Main Row -->
                             <div class="row gap-3 p-4 py-sm-5 justify-content-center">
 
-                                <form action="../components/editProfileProcess.php" method="POST" class="row gap-3 p-4 py-sm-5 justify-content-center" enctype="multipart/form-data" id="editProfile_Form">
+                                <form action="../processes/editProfileProcess.php" method="POST" class="row gap-3 p-4 py-sm-5 justify-content-center" enctype="multipart/form-data" id="editProfile_Form">
                                     
                                     <section class="d-flex flex-column flex-sm-row pb-2 justify-content-center align-items-center gap-4">
                                         <label for="editPfpFile" style="cursor: pointer;">

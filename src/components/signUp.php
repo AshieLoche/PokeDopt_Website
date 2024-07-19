@@ -57,7 +57,7 @@
       <section class="modal-body fw-bold">
 
         <!-- Sign Up Modal Body Form -->
-        <form action="../components/signUpProcess.php" id="signUp_form" method="POST" enctype="multipart/form-data" class="d-flex flex-column gap-3">
+        <form action="../processes/signUpProcess.php" id="signUp_form" method="POST" enctype="multipart/form-data" class="d-flex flex-column gap-3">
           
           <!-- Account Credentials Fieldset -->
           <fieldset class="text-dark d-flex flex-column gap-2">
