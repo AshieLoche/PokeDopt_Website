@@ -65,34 +65,11 @@
                 if (!password_verify($password, $user[0]['password'])) {
                     $errors['password'] = 'Incorrect password\n';
                 }
-        
-                if (array_filter($errors)) {
-        
-                    foreach (array_filter($errors) as $error) {
-                        $errorMessage .= $error;
-                    }
-        
-                    if (isset($_SESSION['userID'])) {
-                        session_unset();
-                        session_destroy();
-                    }
-        
-                } else {
-            
-                    session_start();
                 
-                    if(isset($_POST['remember'])) {
-                        setcookie("userID", $user['0']['id'], time()+30*24*60*60, "/", "");
-                    } else {
-                        $_SESSION['userID'] = $user['0']['id'];
-                    }
-        
-                }
+                $this->assertEquals(2, $user['0']['id']);
         
             }
             
-            // Assert session has been set correctly
-            $this->assertEquals(2, $user['0']['id']);
         }
 
     }
