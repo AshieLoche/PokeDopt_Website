@@ -77,9 +77,9 @@
                         session_destroy();
                     }
             
-                    echo "<script>alert('$errorMessage');</script>";
-                    header('Refresh: 0; URL=../pages/guest.php');
-                    exit;
+                    // echo "<script>alert('$errorMessage');</script>";
+                    // header('Refresh: 0; URL=../pages/guest.php');
+                    // exit;
         
                 } else {
             
