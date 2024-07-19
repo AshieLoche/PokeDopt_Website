@@ -1,0 +1,15 @@
+actor: PowerGuy
+modules:
+    enabled: [PowerHelper, Asserts]
+env:
+    dev:
+        modules:
+            config:
+                PowerHelper:
+                    has_power: true
+    white:
+    dark:
+    magic:
+    green:
+    whisky:
+    red:

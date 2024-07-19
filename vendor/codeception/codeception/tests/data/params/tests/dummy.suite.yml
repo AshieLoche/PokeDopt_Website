@@ -1,0 +1,6 @@
+actor: DummyTester
+modules:
+    enabled:
+        - \Helper\Dummy:
+            vars: ["%KEY1%", '%KEY2%', '%KEY3%', '%KEY4%']
+            path: "%PATH%"

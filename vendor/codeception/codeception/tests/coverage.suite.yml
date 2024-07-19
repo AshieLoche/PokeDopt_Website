@@ -1,0 +1,3 @@
+actor: CoverGuy
+modules:
+    enabled: [Filesystem, Cli, CliHelper, CoverHelper]

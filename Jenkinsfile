@@ -106,7 +106,7 @@ pipeline {
                         # Run PHPUnit tests with JUnit results if PHPUnit is installed
                         if (Test-Path "vendor\\bin\\phpunit") {
                             Write-Output "Running PHPUnit tests with JUnit results..."
-                            & vendor\\bin\\phpunit --bootstrap vendor/autoload.php --log-junit test-results\\phpunit.xml --testdox tests
+                            & vendor\\bin\\phpunit --bootstrap vendor/autoload.php --log-junit test-results\\phpunit.xml tests
                         } else {
                             Write-Output "PHPUnit is not installed. Skipping JUnit results generation."
                         }

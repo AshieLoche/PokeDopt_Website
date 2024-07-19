@@ -11,5 +11,8 @@
             "App\\": "src"
         }
     },
-    "license": "proprietary"
+    "license": "proprietary",
+    "require-dev": {
+        "codeception/codeception": "^5.1"
+    }
 }

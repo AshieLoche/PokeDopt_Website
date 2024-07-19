@@ -1,0 +1,10 @@
+actor: CliGuy
+modules:
+    enabled:
+        - Filesystem
+        - Cli
+        - CliHelper
+        - CodeHelper
+        - Asserts
+steps:
+    - Codeception\Step\ConditionalAssertion

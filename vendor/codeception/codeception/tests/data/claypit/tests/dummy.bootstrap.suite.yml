@@ -1,0 +1,7 @@
+actor: DumbGuy
+path: dummy
+modules:
+    enabled: [Filesystem, DumbHelper]
+env:
+    dev: []
+bootstrap: "../_init.php"

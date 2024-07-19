@@ -1,0 +1,13 @@
+actor: Tester
+paths:
+    tests: .
+    output: _output
+    data: _data
+    support: _support
+suites:
+    unit:
+        path: .
+        actor: UnitTester
+        modules:
+            enabled:
+                - Asserts

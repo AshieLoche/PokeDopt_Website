@@ -1,0 +1,34 @@
+<?php
+
+declare(strict_types=1);
+
+final class ConfigBundledSuitesCest
+{
+    public function runBundledSuite(CliGuy $I)
+    {
+        $I->amInPath('tests/data/bundled_suites');
+        $I->executeCommand('build');
+        $I->executeCommand('run -vvv');
+        $I->seeInShellOutput('OK (1 test');
+    }
+
+    public function runTestByPath(CliGuy $I)
+    {
+        $I->amInPath('tests/data/bundled_suites');
+        $I->executeCommand('run BasicTest.php');
+        $I->seeInShellOutput('OK (1 test');
+    }
+
+    public function generateTestsForBundledSuite(CliGuy $I)
+    {
+        $I->amInPath('tests/data/bundled_suites');
+        $I->executeFailCommand('generate:cest unit Some');
+        $I->seeFileFound('SomeCest.php', '.');
+        $I->deleteFile('SomeCest.php');
+        $I->seeResultCodeIs(0);
+        $I->executeFailCommand('generate:test unit Some');
+        $I->seeResultCodeIs(0);
+        $I->seeFileFound('SomeTest.php', '.');
+        $I->deleteFile('SomeTest.php');
+    }
+}

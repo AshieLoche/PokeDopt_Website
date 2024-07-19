@@ -1,0 +1,15 @@
+include:
+  - jazz
+  - jazz/pianist
+  - shire
+
+groups:
+  group: group.txt
+
+paths:
+  tests: tests
+  data: tests/_data
+  support: tests/_support
+  output: "_log"
+settings:
+  colors: false
