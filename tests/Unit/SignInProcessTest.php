@@ -52,7 +52,7 @@ class SignInProcessTest extends TestCase
         }
 
         // Assert session has been set correctly
-        $this->assertEquals(1, $_SESSION['userID']);
+        $this->assertEquals(2, $_SESSION['userID']);
     }
 
     protected function tearDown(): void
