@@ -66,7 +66,6 @@
                 setcookie("userID", $user['0']['id'], time()+30*24*60*60, "/", "");
             } else {
                 $_SESSION['userID'] = $user['0']['id'];
-
             }
 
             header('Refresh: 0; URL=../pages/pokedopt.php');
