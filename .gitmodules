@@ -1,6 +1,0 @@
-[submodule "vendor/nikic/php-parser"]
-	path = vendor/nikic/php-parser
-	url = https://github.com/nikic/PHP-Parser.git
-[submodule "vendor/sebastian/version"]
-	path = vendor/sebastian/version
-	url = https://github.com/sebastianbergmann/version.git

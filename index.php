@@ -1,6 +1,6 @@
 <?php
 
-    header('Location: pages/pokedopt.php');
+    header('Location: src/pages/pokedopt.php');
     exit;
     
 ?>
