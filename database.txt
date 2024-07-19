@@ -1,0 +1,190 @@
+DROP USER IF EXISTS 'ashie'@'localhost';
+CREATE USER IF NOT EXISTS 'ashie'@'localhost' IDENTIFIED BY 'test12345';
+GRANT ALL PRIVILEGES ON *.* TO 'ashie'@'localhost' WITH GRANT OPTION;
+
+DROP DATABASE IF EXISTS pokedopt;
+CREATE DATABASE IF NOT EXISTS pokedopt;
+
+CREATE TABLE IF NOT EXISTS pokedopt.type (
+    id INT AUTO_INCREMENT,
+    type VARCHAR(255) CHECK (type in ('FIRE', 'WATER', 'ELECTRIC', 'GRASS', 'ICE', 'FIGHTING', 'POISON', 'GROUND', 'FLYING', 'PSYCHIC', 'BUG', 'NORMAL', 'ROCK', 'GHOST', 'DRAGON', 'DARK', 'STEEL', 'FAIRY', 'STELLAR')),
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS pokedopt.species (
+    id INT AUTO_INCREMENT,
+    species VARCHAR(255) UNIQUE,
+    type1_id INT,
+    type2_id INT CHECK (type2_id != type1_id) ,
+    PRIMARY KEY (id),
+    FOREIGN KEY (type1_id) REFERENCES pokedopt.type (id),
+    FOREIGN KEY (type2_id) REFERENCES pokedopt.type (id)
+);
+
+CREATE TABLE IF NOT EXISTS pokedopt.pokemon (
+    id INT AUTO_INCREMENT,
+    img LONGBLOB NOT NULL,
+    name VARCHAR(255),
+    species_id INT,
+    PRIMARY KEY (id),
+    FOREIGN KEY (species_id) REFERENCES pokedopt.species (id)
+);
+
+INSERT INTO pokedopt.type (type)
+VALUES
+('FIRE'), ('WATER'), ('ELECTRIC'), ('GRASS'), ('ICE'), ('FIGHTING'), ('POISON'), ('GROUND'), ('FLYING'), ('PSYCHIC'), ('BUG'), ('NORMAL'), ('ROCK'), ('GHOST'), ('DRAGON'), ('DARK'), ('STEEL'), ('FAIRY'), ('STELLAR');
+
+INSERT INTO pokedopt.species (species, type1_id, type2_id)
+VALUES
+	('Chandelure', '14', '1'),
+	('Gengar', '14', '7'),
+	('Magnezone', '3', '17'),
+	('Dragonite', '15', '9'),
+	('Lugia', '10', '9'),
+	('Incineroar', '1', '16');
+    
+INSERT INTO pokedopt.pokemon (img, name, species_id)
+VALUES
+	(LOAD_FILE('C:/xampp/htdocs/EMC002-1/week8/assets/img/chandelure.jpg'), 'Amier', '1'),
+    (LOAD_FILE('C:/xampp/htdocs/EMC002-1/week8/assets/img/gengar.jpg'), 'Leiroh', '2'),
+    (LOAD_FILE('C:/xampp/htdocs/EMC002-1/week8/assets/img/magnezone.jpg'), 'Paliz', '3'),
+    (LOAD_FILE('C:/xampp/htdocs/EMC002-1/week8/assets/img/dragonite.jpg'), 'Dergz', '4'),
+    (LOAD_FILE('C:/xampp/htdocs/EMC002-1/week8/assets/img/lugia.jpg'), 'Teraille', '5'),
+    (LOAD_FILE('C:/xampp/htdocs/EMC002-1/week8/assets/img/incineroar.jpg'), 'Ohnerion', '6');
+
+SELECT
+    pokemon.id,
+    pokemon.img,
+    pokemon.name,
+    species.species,
+    type1.type,
+    type2.type
+FROM pokedopt.pokemon as pokemon
+INNER JOIN pokedopt.species as species ON pokemon.species_id = species.id
+INNER JOIN pokedopt.type as type1 ON species.type1_id = type1.id
+INNER JOIN pokedopt.type as type2 ON species.type2_id = type2.id;
+
+DROP TABLE IF EXISTS accounts;
+
+CREATE TABLE IF NOT EXISTS accounts (
+    id INT AUTO_INCREMENT,
+    username VARCHAR(255) UNIQUE NOT NULL,
+    email VARCHAR(255) UNIQUE NOT NULL CHECK (email REGEXP '^.+@+.+$'),
+    password VARCHAR(255) UNIQUE NOT NULL,
+    fname VARCHAR(255) NOT NULL,
+    lname VARCHAR(255) NOT NULL,
+    mobile VARCHAR(13) NOT NULL CHECK (mobile REGEXP '^\\+63[0-9]{10}$'),
+    bday  DATE NOT NULL,
+    PRIMARY KEY (id)
+);
+
+INSERT INTO accounts (username, email, password, fname, lname, mobile, bday)
+VALUES ('Ashie', 'ashie@gmail.com', PASSWORD('UwU'), 'Ashie', 'Loche', '+639165733654', '2002-12-09');
+
+Name:
+Species:
+Types:
+Description:
+
+Chandelure - GHOST FIRE - Amier
+Gengar - GHOST POISON - Leiroh
+Magnezone - ELECTRIC STEEL - Paliz
+Dragonite - DRAGON FLYING - Dergz
+Lugia - PSYCHIC FLYING - Teraille
+Incineroar - FIRE DARK - Ohnerion
+
+1 ('FIRE')
+2 ('WATER')
+3 ('ELECTRIC')
+4 ('GRASS')
+5 ('ICE')
+6 ('FIGHTING')
+7 ('POISON')
+8 ('GROUND')
+9 ('FLYING')
+10 ('PSYCHIC')
+11 ('BUG')
+12 ('NORMAL')
+13 ('ROCK')
+14 ('GHOST')
+15 ('DRAGON')
+16 ('DARK')
+17 ('STEEL')
+18 ('FAIRY')
+19 ('Null')
+
+Sessions
+https://www.php.net/manual/en/book.session.php
+
+Cookies
+https://www.php.net/manual/en/features.cookies.php
+
+THINGS TO DO:
+SIGN UP UPLOAD
+SIGN IN LOGIC
+AUTO SIGN IN
+ABOUT US
+CUSTOMER CARE
+
+/* Retrieve the hashed password from the database. */
+$query = 'SELECT password FROM users WHERE username = ?';
+$values = [$username];
+try
+{
+  $res = $pdo->prepare($query);
+  $res->execute($values);
+  $row = $res->fetch();
+}
+catch (PDOException $e)
+{
+  /* Query error. */
+  echo 'Query error.';
+  die();
+}
+/* Verify the password. */
+if (password_verify($input_password, $row['password']))
+{
+  /* The password is correct. */
+  $login = TRUE;
+}
+
+<?php
+$servername = "localhost";
+$username = "your_username";
+$password = "your_password";
+$dbname = "your_database";
+
+// Create connection
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+// Get user input
+$user_email = $_POST['email'];
+$user_password = $_POST['password'];
+
+// Prepare statement to check user email and password
+$stmt = $conn->prepare("SELECT id, password FROM users WHERE email = ?");
+$stmt->bind_param("s", $user_email);
+$stmt->execute();
+$result = $stmt->get_result();
+$row = $result->fetch_assoc();
+
+// Check if user exists and password is correct
+if ($row && password_verify($user_password, $row['password'])) {
+    // Password is correct, authenticate user
+    session_start();
+    $_SESSION['user_id'] = $row['id'];
+    header('Location: dashboard.php');
+} else {
+    // Password is incorrect or user does not exist, show error message
+    echo "Invalid email or password";
+}
+
+// Close connection
+$stmt->close();
+$conn->close();
+?>

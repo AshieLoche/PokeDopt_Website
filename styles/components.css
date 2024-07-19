@@ -1,0 +1,353 @@
+/* Primary SectIon */
+/* #region */
+
+section.primary {
+    flex: 1;
+    overflow: auto;
+    height: calc(100vh - 178px);
+}
+
+section.primary::-webkit-scrollbar {
+    margin-top: 10px;
+    width: 15px;
+    background-color: #4e555b;
+}
+
+section.primary::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+    background-color: #2f3235;
+}
+  
+section.primary::-webkit-scrollbar-thumb:hover {
+    background-color: #1a181d;
+}
+  
+section.primary::-webkit-scrollbar-corner {
+    background-color: transparent;
+}
+
+/* #endregion */
+/* Primary SectIon */
+
+/* Header Nav */
+#header-nav {
+    min-height: 6%;
+}
+/* Header Nav */
+
+/* Header Nav Elements*/
+/* #region */
+
+#header-nav-logo-icon {
+    height: 2rem;
+    width: 2rem;
+    filter: brightness(0%) invert(1);
+}
+
+#header-nav-logo-link:hover #header-nav-logo-icon, #header-nav-logo-link:hover span {
+    filter: brightness(0%) invert(0);
+}
+
+/* #endregion */
+/* Header Nav Elements*/
+
+/* Main Content */
+#main-content {
+    min-height: 90%;
+}
+/* Main Content */
+
+/* Main Content Elements*/
+/* #region */
+.pokeCard  {
+    max-width: 500px;
+}
+/* #endregion */
+/* Main Content Elements*/
+
+/* Footer */
+footer {
+    min-height: 4%;
+}
+/* Footer */
+
+/* Side Nav */
+/* #region */
+
+nav#side-nav {
+    overflow-y: auto;
+    min-height: 178px;
+}
+
+nav#side-nav::-webkit-scrollbar {
+    display: none;
+}
+
+nav.side-nav-shrunk {
+    width: 5rem;
+}
+
+nav.side-nav-shrunk span {
+    display: none;
+}
+
+nav.side-nav-shrunk section.btn-carousel button {
+    height: 5rem !important;
+    width: 5rem !important;
+    padding: 0 !important;
+}
+
+/* #endregion */
+/* Side Nav */
+
+/* Side Nav Elements */
+/* #region */
+
+section.btn-carousel {
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+}
+
+section.btn-carousel::-webkit-scrollbar {
+    margin-top: 10px;
+    width: 10px;
+    background-color: #4e555b;
+}
+  
+section.btn-carousel::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+    background-color: #343a40;
+}
+  
+section.btn-carousel::-webkit-scrollbar-thumb:hover {
+    background-color: #454d55;
+}
+  
+section.btn-carousel::-webkit-scrollbar-corner {
+    background-color: transparent;
+}
+
+section.btn-carousel button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 7rem;
+    width: 7rem;
+}
+
+section.btn-carousel button i, section.btn-carousel button img {
+    min-height: 50px;
+    min-width: 50px;
+    font-size: 2.5rem;
+    line-height: 3rem;
+}
+
+section.btn-carousel button:nth-child(2) img, section.btn-carousel button:nth-child(4) img {
+    filter: brightness(0%) invert(1);
+}
+
+section.btn-carousel button:nth-child(2):hover img, section.btn-carousel button:nth-child(3):hover img, section.btn-carousel button:nth-child(4):hover img {
+    filter: brightness(0%) invert(0);
+}
+/* #endregion */
+/* Side Nav Elements */
+
+/* Modals */
+/* #region */
+
+.modal::-webkit-scrollbar {
+    display: none;
+}
+
+.modal-dialog {
+    height: 100vh;
+    min-width: 100vw;
+}
+
+.modal-content {
+    max-width: 600px;
+}
+
+#sign-icon {
+    height: 1.75rem;
+    width: 1.75rem;
+    filter: brightness(0%) invert(1);
+}
+
+#gender, .accordion-button::after, .accordion-button:not(.collapsed)::after {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23fff'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+}
+
+.modal-switch {
+    display: none;
+}
+
+.modal .input-group input {
+    border-left: 1px solid white !important;
+}
+
+.modal input[type="date"], input[type="date"] {
+    color-scheme: dark;
+}
+
+.modal input[type="date"]::-webkit-calendar-picker-indicator {
+    font-size: 1.5rem;
+}
+
+.modal input[type="date"]::-webkit-datetime-edit {
+    color: white;
+}
+
+.modal input[type="date"]::-webkit-datetime-edit-text {
+    color: white;
+}
+
+.modal input[type="date"]::-webkit-datetime-edit-month-field,
+.modal input[type="date"]::-webkit-datetime-edit-day-field,
+.modal input[type="date"]::-webkit-datetime-edit-year-field {
+    color: white;
+}
+
+.modal input[type="date"]::-webkit-inner-spin-button,
+.modal input[type="date"]::-webkit-clear-button {
+    display: none;
+}
+
+.modal input[type="date"]::-webkit-calendar-picker {
+    color: white;
+}
+/* #endregion */
+/* Modals */
+
+/* Form Place Holder */
+.form-control::-webkit-input-placeholder {
+    color: white;
+}
+
+.addControl::-webkit-input-placeholder {
+    color: black;
+}
+/* Form Place Holder */
+
+/* Medium Breakpoint */
+@media screen and (min-width: 768px) {
+    
+    /* Primary SectIon */
+    section.primary {
+        height: 100vh;
+    }
+    /* Primary SectIon */
+
+    /* Main Content Elements */
+    /* #region */
+    .pokeCard img  {
+        min-height: 200px;
+        max-height: 200px;
+    }
+
+    .card-text::-webkit-scrollbar {
+        width: 10px;
+        background-color: #343a40;
+    }
+      
+    .card-text::-webkit-scrollbar-thumb {
+        border-radius: 5px;
+        background-color: #4e555b;
+    }
+      
+    .card-text::-webkit-scrollbar-thumb:hover {
+        background-color: #454d55;
+    }
+      
+    .card-text::-webkit-scrollbar-corner {
+        background-color: transparent;
+    }
+    /* #endregion */
+    /* Main Content Elements */
+
+    /* Side Nav */
+    /* #region */
+    nav#side-nav {
+        height: 100vh;
+        border: 0 !important;
+        border-right: 1px solid white !important;
+        position: static;
+    }
+
+    nav.side-nav-expanded {
+        width: 7rem;
+    }
+    /* #endregion */
+    /* Side Nav */
+
+    /* Side Nav Elements */
+    /* #region */
+
+    section.btn-carousel {
+        overflow-x: visible;
+        scroll-snap-type: none;
+    }
+
+    section.btn-carousel button {
+        border-radius: 0;
+        border: 0;
+        border-bottom: 1px solid;
+    }
+    /* #endregion */
+    /* Side Nav Elements */
+
+}
+/* Medium Breakpoint */
+
+/* Extra Large Breakpoint */
+@media screen and (min-width: 1200px) {
+    /* Main Content Elements */
+    /* #region */
+    .pokeCard  {
+        min-height: 500px;
+        max-height: 500px;
+    }
+
+    .card-header {
+        font-size: 3rem;
+    }
+
+    .card-title {
+        font-size: 2rem !important;
+    }
+
+    .card-text {
+        font-size: 1.5rem !important;
+        overflow: auto;
+        min-height: 135px;
+        max-height: 135px;
+        padding-right: 10px;
+    }
+    /* #endregion */
+    /* Main Content Elements */
+}
+/* Extra Large Breakpoint */
+
+/* Extra Extra Large Breakpoint */
+@media screen and (min-width: 1400px) {
+    /* Main Content Elements */
+    /* #region */
+    .card-header {
+        font-size: 2.75rem;
+    }
+
+    .card-title {
+        font-size: 1.75rem !important;
+    }
+
+    .card-text {
+        min-height: 140px;
+        max-height: 140px;
+        font-size: 1.25rem !important;
+    }
+    /* #endregion */
+    /* Main Content Elements */
+}
+/* Extra Extra Large Breakpoint */
