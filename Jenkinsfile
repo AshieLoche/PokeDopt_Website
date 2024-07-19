@@ -71,41 +71,47 @@ pipeline {
         }
         stage('Run tests') {
             steps {
-                powershell '''
-                    # Run PHPUnit tests if PHPUnit is installed
-                    if (Test-Path "vendor\\bin\\phpunit") {
-                        Write-Output "Running PHPUnit tests..."
-                        & vendor\\bin\\phpunit --bootstrap vendor/autoload.php tests
-                    } else {
-                        Write-Output "PHPUnit is not installed. Skipping tests."
-                    }
-                '''
+                catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
+                    powershell '''
+                        # Run PHPUnit tests if PHPUnit is installed
+                        if (Test-Path "vendor\\bin\\phpunit") {
+                            Write-Output "Running PHPUnit tests..."
+                            & vendor\\bin\\phpunit --bootstrap vendor/autoload.php tests
+                        } else {
+                            Write-Output "PHPUnit is not installed. Skipping tests."
+                        }
+                    '''
+                }
             }
         }
         stage('Run tests with TestDox') {
             steps {
-                powershell '''
-                    # Run PHPUnit tests with TestDox if PHPUnit is installed
-                    if (Test-Path "vendor\\bin\\phpunit") {
-                        Write-Output "Running PHPUnit tests with TestDox..."
-                        & vendor\\bin\\phpunit --bootstrap vendor/autoload.php --testdox tests
-                    } else {
-                        Write-Output "PHPUnit is not installed. Skipping TestDox tests."
-                    }
-                '''
+                catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
+                    powershell '''
+                        # Run PHPUnit tests with TestDox if PHPUnit is installed
+                        if (Test-Path "vendor\\bin\\phpunit") {
+                            Write-Output "Running PHPUnit tests with TestDox..."
+                            & vendor\\bin\\phpunit --bootstrap vendor/autoload.php --testdox tests
+                        } else {
+                            Write-Output "PHPUnit is not installed. Skipping TestDox tests."
+                        }
+                    '''
+                }
             }
         }
         stage('Run tests with JUnit results') {
             steps {
-                powershell '''
-                    # Run PHPUnit tests with JUnit results if PHPUnit is installed
-                    if (Test-Path "vendor\\bin\\phpunit") {
-                        Write-Output "Running PHPUnit tests with JUnit results..."
-                        & vendor\\bin\\phpunit --bootstrap vendor/autoload.php --log-junit test-results\\phpunit.xml tests
-                    } else {
-                        Write-Output "PHPUnit is not installed. Skipping JUnit results generation."
-                    }
-                '''
+                catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
+                    powershell '''
+                        # Run PHPUnit tests with JUnit results if PHPUnit is installed
+                        if (Test-Path "vendor\\bin\\phpunit") {
+                            Write-Output "Running PHPUnit tests with JUnit results..."
+                            & vendor\\bin\\phpunit --bootstrap vendor/autoload.php --log-junit test-results\\phpunit.xml tests
+                        } else {
+                            Write-Output "PHPUnit is not installed. Skipping JUnit results generation."
+                        }
+                    '''
+                }
             }
             post {
                 always {
