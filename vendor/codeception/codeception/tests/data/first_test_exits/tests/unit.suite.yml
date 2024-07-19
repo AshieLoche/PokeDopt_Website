@@ -1,5 +1,0 @@
-# Codeception Test Suite Configuration
-#
-# Suite for unit (internal) tests.
-
-actor: UnitTester

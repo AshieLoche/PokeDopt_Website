@@ -1,9 +1,0 @@
-namespace: foo
-actor: Tester
-paths:
-  tests: "tests"
-  data: "data"
-  support: "support"
-  output: "output"
-settings:
-  colors: false

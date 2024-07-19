@@ -1,5 +1,0 @@
-actor: AttrsTester
-suite_namespace: \Attrs
-modules:
-    # enable helpers as array
-    enabled: [Asserts]

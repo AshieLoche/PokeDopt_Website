@@ -1,3 +1,0 @@
-actor: CodeGuy
-modules:
-    enabled: [CodeHelper]

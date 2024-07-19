@@ -1,5 +1,0 @@
-actor: DumbGuy
-modules:
-    enabled: [Filesystem, DumbHelper]
-env:
-    dev: []

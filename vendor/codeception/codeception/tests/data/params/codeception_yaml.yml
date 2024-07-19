@@ -1,9 +1,0 @@
-actor: Tester
-paths:
-    tests: tests
-    output: .
-    data: .
-    support: tests/_support
-params:
-    - env
-    - params.yml
