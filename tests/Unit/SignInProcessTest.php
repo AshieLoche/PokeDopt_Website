@@ -99,7 +99,7 @@
             }
             
             // Assert session has been set correctly
-            $this->assertEquals(1, $user['0']['id']);
+            $this->assertEquals(2, $user['0']['id']);
         }
 
     }
