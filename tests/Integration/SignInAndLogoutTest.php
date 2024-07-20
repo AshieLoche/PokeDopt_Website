@@ -63,7 +63,6 @@ class SignInAndLogoutTest extends TestCase
         }
 
         session_start();
-        $_SESSION['userID'] = 1;
         $this->assertEmpty($_SESSION);
 
     }
