@@ -5,7 +5,7 @@ pipeline {
         DOCKER_IMAGE = "ashieloche/pokedopt_website"
         DOCKER_REGISTRY = "https://index.docker.io/v1/"
         REGISTRY_CREDENTIALS = 'docker-registry-credentials'
-        STAGING_CONTAINER_NAME = "silly_nobel"
+        STAGING_CONTAINER_NAME = "pokedopt_website_container"
         BUILD_ID = "latest"
     }
 
@@ -151,8 +151,8 @@ pipeline {
                     try {
                         // Stop and remove the existing container if it exists
                         bat """
-                        docker stop ${env.STAGING_CONTAINER_NAME} || true
-                        docker rm ${env.STAGING_CONTAINER_NAME} || true
+                        docker ps -q --filter "name=${env.STAGING_CONTAINER_NAME}" | findstr . && docker stop ${env.STAGING_CONTAINER_NAME} || echo Container not running
+                        docker ps -aq --filter "name=${env.STAGING_CONTAINER_NAME}" | findstr . && docker rm ${env.STAGING_CONTAINER_NAME} || echo Container not found
                         """
 
                         // Pull the latest image
