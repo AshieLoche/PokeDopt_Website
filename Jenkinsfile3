@@ -150,9 +150,22 @@ pipeline {
                 script {
                     try {
                         // Stop and remove the existing container if it exists
-                        bat """
-                        docker ps -q --filter "name=${env.STAGING_CONTAINER_NAME}" | findstr . && docker stop ${env.STAGING_CONTAINER_NAME} || echo Container not running
-                        docker ps -aq --filter "name=${env.STAGING_CONTAINER_NAME}" | findstr . && docker rm ${env.STAGING_CONTAINER_NAME} || echo Container not found
+                                               bat """
+                        docker ps -q --filter "name=${env.STAGING_CONTAINER_NAME}" > container_id.txt 2>&1
+                        if exist container_id.txt (
+                            for /F %%i in (container_id.txt) do docker stop %%i 2>&1
+                        ) else (
+                            echo Container not running
+                        )
+                        del container_id.txt
+
+                        docker ps -aq --filter "name=${env.STAGING_CONTAINER_NAME}" > container_id.txt 2>&1
+                        if exist container_id.txt (
+                            for /F %%i in (container_id.txt) do docker rm %%i 2>&1
+                        ) else (
+                            echo Container not found
+                        )
+                        del container_id.txt
                         """
 
                         // Pull the latest image
