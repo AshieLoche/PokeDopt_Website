@@ -108,29 +108,29 @@ pipeline {
                 expression { currentBuild.result == null || currentBuild.result == 'SUCCESS' }
             }
             steps {
-                script {            
-          	          // Build Docker image
-       		        docker build -t myapp:staging .
-        	          // Stop and remove any existing staging container
-        	        try {
-          	             docker stop myapp_staging
-        	        } catch (Exception ex) {
-         	            Write-Output "No existing staging container found."
-         	        }
-        	        try {
-        	        docker rm myapp_staging
-        	        } catch (Exception ex) {
-         	        Write-Output "No existing staging container found."
-        	        }
-         	        // Run the staging container
-                	docker run -d --name myapp_staging -p 8080:80 myapp:staging
-         	        // Verify the staging container is running
-          	        def stagingContainer = docker.getContainer("myapp_staging")
-         	        if (stagingContainer.isRunning()) {
-         	       Write-Output "Application deployed to staging environment successfully."
-         	        } else {
-          	        error "Failed to deploy application to staging environment."
-          	        }
+                script {
+                    // Build Docker image
+                    sh 'docker build -t myapp:staging .'
+                    // Stop and remove any existing staging container
+                    try {
+                        sh 'docker stop myapp_staging'
+                    } catch (Exception ex) {
+                        echo "No existing staging container found."
+                    }
+                    try {
+                        sh 'docker rm myapp_staging'
+                    } catch (Exception ex) {
+                        echo "No existing staging container found."
+                    }
+                    // Run the staging container
+                    sh 'docker run -d --name myapp_staging -p 8080:80 myapp:staging'
+                    // Verify the staging container is running
+                    def stagingContainer = sh(script: "docker inspect -f {{.State.Running}} myapp_staging", returnStdout: true).trim()
+                    if (stagingContainer == 'true') {
+                        echo "Application deployed to staging environment successfully."
+                    } else {
+                        error "Failed to deploy application to staging environment."
+                    }
                 }
             }
         }
