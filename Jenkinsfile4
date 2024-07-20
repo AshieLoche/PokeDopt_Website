@@ -1,8 +1,5 @@
 pipeline {
     agent any
-    parameters {
-        booleanParam(name: 'DEPLOY_TO_PRODUCTION', defaultValue: false, description: 'Set to true to deploy to production')
-    }
     stages {
         stage('Install Dependencies') {
             steps {
@@ -107,18 +104,20 @@ pipeline {
                 }
             }
         }
-        stage('Manual Deployment to Production') {
-            when {
-                expression { params.DEPLOY_TO_PRODUCTION }
-            }
+        stage('Deploy to Production') {
             steps {
+                script {
+                    input message: 'Deploy to Production?', ok: 'Deploy'
+                }
                 powershell '''
+                    # Commands to deploy the application to the production environment
                     Write-Output "Deploying application to production..."
-                    # Add your deployment commands here
-                    # For example, docker commands to deploy to a container
-                    # docker run -d --name myapp -p 80:80 myapp:latest
+                    # Add your deployment script/commands here
                 '''
             }
         }
+    }
+    triggers {
+        upstream(upstreamProjects: '', threshold: hudson.model.Result.SUCCESS)
     }
 }
