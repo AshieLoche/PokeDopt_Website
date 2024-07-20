@@ -7,5 +7,5 @@ COPY . /var/www/html/
 # Install any necessary PHP extensions
 RUN docker-php-ext-install mysqli pdo pdo_mysql
 
-# Expose port 8081
-EXPOSE 8081
+# Expose port 80
+EXPOSE 80
