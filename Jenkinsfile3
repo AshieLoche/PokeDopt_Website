@@ -157,7 +157,7 @@ pipeline {
 
                         // Pull the latest image
                         bat """
-                        docker pull ${env.DOCKER_REGISTRY}/${env.DOCKER_IMAGE}:${env.BUILD_ID}
+                        docker pull ${env.DOCKER_REGISTRY}${env.DOCKER_IMAGE}:${env.BUILD_ID}
                         """
 
                         // Run the new container
