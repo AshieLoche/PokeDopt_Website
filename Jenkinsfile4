@@ -104,7 +104,7 @@ pipeline {
                 }
             }
         }
-       stage('Deploy to Production') {
+        stage('Deploy to Production') {
             steps {
                 script {
                     def testType = input message: 'Choose Test Type for Deployment:', ok: 'Proceed', parameters: [
@@ -140,21 +140,11 @@ pipeline {
                     }
                     echo 'Deploying application to production...'
                     powershell '''
-                        # Docker login
-                        docker login -u YOUR_USERNAME -p YOUR_PASSWORD
-
-                        # Pull the latest image
-                        docker pull your-docker-repo/your-app:latest
-
-                        # Stop the current container (if running)
-                        docker stop your-container-name || true
-                        docker rm your-container-name || true
-
-                        # Start the new container
-                        docker run -d --name your-container-name -p 80:80 your-docker-repo/your-app:latest
-
-                        Write-Output "Deployment completed."
+                        # Commands to deploy the application to the production environment
+                        Write-Output "Deploying application to production..."
+                        # Add your deployment script/commands here
                     '''
+                }
             }
         }
     }
