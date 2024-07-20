@@ -1,5 +1,13 @@
 pipeline {
     agent any
+
+    environment {
+        DOCKER_IMAGE = "ashieloche/pokedopt_website"
+        DOCKER_REGISTRY = "https://index.docker.io/v1/"
+        REGISTRY_CREDENTIALS = credentials('docker-registry-credentials')
+        STAGING_CONTAINER_NAME = "pokedopt_website_container"
+    }
+
     stages {
         stage('Install Dependencies') {
             steps {
@@ -12,9 +20,6 @@ pipeline {
                         Write-Output "Chocolatey not found. Installing Chocolatey..."
                         [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.SecurityProtocolType]::Tls12
                         iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
-
-                        # Add Chocolatey to PATH
-                        [System.Environment]::SetEnvironmentVariable("PATH", "$env:PATH;C:\\ProgramData\\chocolatey\\bin", [System.EnvironmentVariableTarget]::Machine)
                         Write-Output "Chocolatey installed. Please reboot the system for the changes to take effect."
                         Exit 1
                     } else {
@@ -32,7 +37,7 @@ pipeline {
                     # Ensure OpenSSL extension is enabled for PHP
                     $isOpensslLoaded = php -r "echo extension_loaded('openssl');" 2>$null
                     if ($isOpensslLoaded -eq "1") {
-                        Write-Output "OpenSSL extension already loaded. Exiting."
+                        Write-Output "OpenSSL extension already loaded."
                     } else {
                         $phpIniPath = php -r "echo php_ini_loaded_file();"
                         if (-not [string]::IsNullOrEmpty($phpIniPath)) {
@@ -42,7 +47,7 @@ pipeline {
                                 Write-Output "OpenSSL extension enabled. Please restart your web server or PHP service."
                                 Exit 1
                             } else {
-                                Write-Output "OpenSSL extension already enabled in the configuration file."
+                                Write-Output "OpenSSL extension already enabled."
                             }
                         } else {
                             Write-Output "PHP INI file not found."
@@ -55,7 +60,6 @@ pipeline {
                         [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
                         Invoke-WebRequest -Uri https://getcomposer.org/Composer-Setup.exe -OutFile composer-setup.exe
                         Start-Process -Wait -NoNewWindow -FilePath "composer-setup.exe" -ArgumentList "/install=C:\\ProgramData\\ComposerSetup /SILENT"
-                        [System.Environment]::SetEnvironmentVariable("PATH", "$env:PATH;C:\\ProgramData\\ComposerSetup\\bin", [System.EnvironmentVariableTarget]::Machine)
                         Write-Output "Composer installed."
                     } else {
                         Write-Output "Composer is already installed."
@@ -65,9 +69,33 @@ pipeline {
                     Write-Output "Verifying installations..."
                     php -v
                     composer -v
+                    if (Test-Path "vendor\\bin\\phpunit") {
+                        vendor\\bin\\phpunit --version
+                    } else {
+                        Write-Output "PHPUnit not found. Skipping test verification."
+                    }
                 '''
             }
         }
+
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    docker.build("${env.DOCKER_IMAGE}:${env.BUILD_ID}")
+                }
+            }
+        }
+
+        stage('Push Docker Image') {
+            steps {
+                script {
+                    docker.withRegistry("${env.DOCKER_REGISTRY}", "${env.REGISTRY_CREDENTIALS}") {
+                        docker.image("${env.DOCKER_IMAGE}:${env.BUILD_ID}").push()
+                    }
+                }
+            }
+        }
+
         stage('Run tests with TestDox') {
             steps {
                 catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
@@ -83,6 +111,7 @@ pipeline {
                 }
             }
         }
+
         stage('Run tests with JUnit results') {
             steps {
                 catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
@@ -103,40 +132,31 @@ pipeline {
                 }
             }
         }
-         stage('Deploy to Staging') {
-            when {
-                expression { currentBuild.result == null || currentBuild.result == 'SUCCESS' }
-            }
+
+        stage('Deploy to Staging') {
             steps {
-                powershell '''
-                    # Build Docker image
-                    docker build -t myapp:staging .
-
-                    # Stop and remove any existing staging container
+                script {
                     try {
-                        docker stop myapp_staging
-                    } catch {
-                        Write-Output "No existing staging container found."
-                    }
-                    try {
-                        docker rm myapp_staging
-                    } catch {
-                        Write-Output "No existing staging container found."
-                    }
+                        // Stop and remove the existing container if it exists
+                        bat """
+                        docker stop ${env.STAGING_CONTAINER_NAME} || true
+                        docker rm ${env.STAGING_CONTAINER_NAME} || true
+                        """
 
-                    # Run the staging container
-                    docker run -d --name myapp_staging -p 8080:80 myapp:staging
+                        // Pull the latest image
+                        bat """
+                        docker pull ${env.DOCKER_REGISTRY}/${env.DOCKER_IMAGE}:${env.BUILD_ID}
+                        """
 
-                    # Verify the staging container is running
-                    $containerStatus = docker inspect -f "{{.State.Running}}" myapp_staging
-                    if ($containerStatus -eq "true") {
-                        Write-Output "Application deployed to staging environment successfully."
-                    } else {
-                        Write-Error "Failed to deploy application to staging environment."
+                        // Run the new container
+                        bat """
+                        docker run -d --name ${env.STAGING_CONTAINER_NAME} -p 80:80 ${env.DOCKER_REGISTRY}/${env.DOCKER_IMAGE}:${env.BUILD_ID}
+                        """
+                    } catch (Exception e) {
+                        error("Deployment to staging failed: ${e.getMessage()}")
                     }
-                '''
                 }
             }
         }
     }
-
+}
