@@ -58,7 +58,7 @@ class SignInTest extends TestCase
     protected function tearDown(): void
     {
         // Clear session
-        $_SESSION = [];
+        session_unset();
         session_destroy();
     }
 }
