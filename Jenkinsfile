@@ -1,5 +1,8 @@
 pipeline {
     agent any
+    triggers {
+        githubPush()
+    }
     stages {
         stage('Install Dependencies') {
             steps {
@@ -69,37 +72,8 @@ pipeline {
                 '''
             }
         }
-        stage('Run tests') {
-            steps {
-                catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
-                    powershell '''
-                        # Run PHPUnit tests if PHPUnit is installed
-                        if (Test-Path "vendor\\bin\\phpunit") {
-                            Write-Output "Running PHPUnit tests..."
-                            & vendor\\bin\\phpunit --bootstrap vendor/autoload.php tests
-                        } else {
-                            Write-Output "PHPUnit is not installed. Skipping tests."
-                        }
-                    '''
-                }
-            }
         }
-        stage('Run tests with TestDox') {
-            steps {
-                catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
-                    powershell '''
-                        # Run PHPUnit tests with TestDox if PHPUnit is installed
-                        if (Test-Path "vendor\\bin\\phpunit") {
-                            Write-Output "Running PHPUnit tests with TestDox..."
-                            & vendor\\bin\\phpunit --bootstrap vendor/autoload.php --testdox tests
-                        } else {
-                            Write-Output "PHPUnit is not installed. Skipping TestDox tests."
-                        }
-                    '''
-                }
-            }
-        }
-        stage('Run tests with JUnit results') {
+        stage('Run JUnit Tests') {
             steps {
                 catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
                     powershell '''
