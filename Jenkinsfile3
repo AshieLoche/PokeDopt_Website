@@ -2,10 +2,10 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE = "your_docker_image_name"
-        DOCKER_REGISTRY = "your_docker_registry"
+        DOCKER_IMAGE = "ashieloche/pokedopt_website"
+        DOCKER_REGISTRY = "https://index.docker.io/v1/"
         REGISTRY_CREDENTIALS = credentials('docker-registry-credentials')
-        STAGING_CONTAINER_NAME = "staging_container"
+        STAGING_CONTAINER_NAME = "pokedopt_website_container"
     }
 
     stages {
@@ -133,25 +133,26 @@ pipeline {
             }
         }
 
+
         stage('Deploy to Staging') {
             steps {
                 script {
                     try {
                         // Stop and remove the existing container if it exists
-                        bat '''
+                        bat """
                         docker stop ${env.STAGING_CONTAINER_NAME} || true
                         docker rm ${env.STAGING_CONTAINER_NAME} || true
-                        '''
+                        """
 
                         // Pull the latest image
-                        bat '''
+                        bat """
                         docker pull ${env.DOCKER_REGISTRY}/${env.DOCKER_IMAGE}:${env.BUILD_ID}
-                        '''
+                        """
 
                         // Run the new container
-                        bat '''
+                        bat """
                         docker run -d --name ${env.STAGING_CONTAINER_NAME} -p 80:80 ${env.DOCKER_REGISTRY}/${env.DOCKER_IMAGE}:${env.BUILD_ID}
-                        '''
+                        """
                     } catch (Exception e) {
                         error("Deployment to staging failed: ${e.getMessage()}")
                     }
@@ -160,5 +161,3 @@ pipeline {
         }
     }
 }
-message.txt
-8 KB
