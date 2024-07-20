@@ -104,7 +104,7 @@ pipeline {
                 }
             }
         }
-                stage('Deploy to Production') {
+       stage('Deploy to Production') {
             steps {
                 script {
                     def testType = input message: 'Choose Test Type for Deployment:', ok: 'Proceed', parameters: [
@@ -155,7 +155,7 @@ pipeline {
 
                         Write-Output "Deployment completed."
                     '''
-                }
+            }
         }
     }
     triggers {
