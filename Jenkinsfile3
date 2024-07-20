@@ -4,7 +4,7 @@ pipeline {
     environment {
         DOCKER_IMAGE = "ashieloche/pokedopt_website"
         DOCKER_REGISTRY = "https://index.docker.io/v1/"
-        REGISTRY_CREDENTIALS = credentials('docker-registry-credentials')
+        REGISTRY_CREDENTIALS = 'docker-registry-credentials'
         STAGING_CONTAINER_NAME = "pokedopt_website_container"
     }
 
