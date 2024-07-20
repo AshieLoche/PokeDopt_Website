@@ -175,7 +175,7 @@ pipeline {
 
                         // Run the new container
                         bat """
-                        docker run -d --name ${env.STAGING_CONTAINER_NAME} -p 8081:80 ${env.DOCKER_REGISTRY}/${env.DOCKER_IMAGE}:${env.BUILD_ID}
+                        docker run -d --name ${env.STAGING_CONTAINER_NAME} -p 8081:80 ${env.DOCKER_IMAGE}:${env.BUILD_ID}
                         """
                     } catch (Exception e) {
                         error("Deployment to staging failed: ${e.getMessage()}")
