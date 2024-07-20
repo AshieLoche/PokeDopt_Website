@@ -20,7 +20,7 @@ class SignInTest extends TestCase
         // Simulate form submission
         $_POST['signIn'] = true;
         $_POST['email'] = 'ashie.loche@pokedopt.com';
-        $_POST['password'] = 'ThisIsMyPokedoptYIPPIE!!!<3_';
+        $_POST['password'] = 'ThisIsMyPokedoptYIPPIE!!!<3';
         $_POST['remember'] = false;
 
         $host = 'localhost';
