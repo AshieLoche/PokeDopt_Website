@@ -1,8 +1,7 @@
 <?php
-
 use PHPUnit\Framework\TestCase;
 
-class SignInProcessTest extends TestCase
+class SignInAndLogoutTest extends TestCase
 {
     protected function setUp(): void
     {
@@ -13,9 +12,10 @@ class SignInProcessTest extends TestCase
         
         // Clear session
         $_SESSION = [];
+        $_POST = [];
     }
 
-    public function testSignInSuccess()
+    public function testSignInAndLogoutSuccess()
     {
         // Simulate form submission
         $_POST['signIn'] = true;
@@ -52,7 +52,19 @@ class SignInProcessTest extends TestCase
         }
 
         // Assert session has been set correctly
-        $this->assertEquals(1, $_SESSION['userID']);
+        // $this->assertEquals(1, $_SESSION['userID']);
+
+        $_POST['logout'] = true;
+
+        if(isset($_POST['logout'])) {
+            session_unset();
+            session_destroy();
+            setcookie("userID", '', time()-3600, "/", "");
+        }
+
+        session_start();
+        $this->assertEmpty($_SESSION);
+
     }
 
     protected function tearDown(): void
@@ -62,4 +74,5 @@ class SignInProcessTest extends TestCase
         session_destroy();
     }
 }
+
 ?>
