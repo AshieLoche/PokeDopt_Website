@@ -81,7 +81,13 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    docker.build("${env.DOCKER_IMAGE}:${env.BUILD_ID}")
+                    try {
+                        echo "Building Docker image..."
+                        def customImage = docker.build("${env.DOCKER_IMAGE}:${env.BUILD_ID}")
+                        echo "Docker image built: ${customImage}"
+                    } catch (Exception e) {
+                        error("Docker build failed: ${e.getMessage()}")
+                    }
                 }
             }
         }
@@ -89,8 +95,13 @@ pipeline {
         stage('Push Docker Image') {
             steps {
                 script {
-                    docker.withRegistry("${env.DOCKER_REGISTRY}", "${env.REGISTRY_CREDENTIALS}") {
-                        docker.image("${env.DOCKER_IMAGE}:${env.BUILD_ID}").push()
+                    try {
+                        docker.withRegistry("${env.DOCKER_REGISTRY}", "${env.REGISTRY_CREDENTIALS}") {
+                            echo "Pushing Docker image..."
+                            docker.image("${env.DOCKER_IMAGE}:${env.BUILD_ID}").push()
+                        }
+                    } catch (Exception e) {
+                        error("Docker push failed: ${e.getMessage()}")
                     }
                 }
             }
@@ -133,7 +144,6 @@ pipeline {
             }
         }
 
-
         stage('Deploy to Staging') {
             steps {
                 script {
@@ -151,7 +161,7 @@ pipeline {
 
                         // Run the new container
                         bat """
-                        docker run -d --name ${env.STAGING_CONTAINER_NAME} -p 80:80 ${env.DOCKER_REGISTRY}/${env.DOCKER_IMAGE}:${env.BUILD_ID}
+                        docker run -d --name ${env.STAGING_CONTAINER_NAME} -p 8081:80 ${env.DOCKER_REGISTRY}/${env.DOCKER_IMAGE}:${env.BUILD_ID}
                         """
                     } catch (Exception e) {
                         error("Deployment to staging failed: ${e.getMessage()}")
