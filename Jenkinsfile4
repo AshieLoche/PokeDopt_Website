@@ -104,17 +104,58 @@ pipeline {
                 }
             }
         }
-        stage('Deploy to Production') {
+                stage('Deploy to Production') {
             steps {
                 script {
-                    input message: 'Deploy to Production?', ok: 'Deploy'
+                    def testType = input message: 'Choose Test Type for Deployment:', ok: 'Proceed', parameters: [
+                        choice(name: 'TestType', choices: 'Run tests with TestDox\nRun tests with JUnit results', description: 'Select the type of test to run before deployment')
+                    ]
+                    if (testType == 'Run tests with TestDox') {
+                        echo 'Running TestDox tests...'
+                        catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
+                            powershell '''
+                                # Run PHPUnit tests with TestDox if PHPUnit is installed
+                                if (Test-Path "vendor\\bin\\phpunit") {
+                                    Write-Output "Running PHPUnit tests with TestDox..."
+                                    & vendor\\bin\\phpunit --bootstrap vendor/autoload.php --testdox tests
+                                } else {
+                                    Write-Output "PHPUnit is not installed. Skipping TestDox tests."
+                                }
+                            '''
+                        }
+                    } else if (testType == 'Run tests with JUnit results') {
+                        echo 'Running JUnit tests...'
+                        catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
+                            powershell '''
+                                # Run PHPUnit tests with JUnit results if PHPUnit is installed
+                                if (Test-Path "vendor\\bin\\phpunit") {
+                                    Write-Output "Running PHPUnit tests with JUnit results..."
+                                    & vendor\\bin\\phpunit --bootstrap vendor/autoload.php --log-junit test-results\\phpunit.xml tests\\Integration
+                                } else {
+                                    Write-Output "PHPUnit is not installed. Skipping JUnit results generation."
+                                }
+                            '''
+                        }
+                        junit testResults: 'test-results\\*.xml', skipPublishingChecks: true
+                    }
+                    echo 'Deploying application to production...'
+                    powershell '''
+                        # Docker login
+                        docker login -u YOUR_USERNAME -p YOUR_PASSWORD
+
+                        # Pull the latest image
+                        docker pull your-docker-repo/your-app:latest
+
+                        # Stop the current container (if running)
+                        docker stop your-container-name || true
+                        docker rm your-container-name || true
+
+                        # Start the new container
+                        docker run -d --name your-container-name -p 80:80 your-docker-repo/your-app:latest
+
+                        Write-Output "Deployment completed."
+                    '''
                 }
-                powershell '''
-                    # Commands to deploy the application to the production environment
-                    Write-Output "Deploying application to production..."
-                    # Add your deployment script/commands here
-                '''
-            }
         }
     }
     triggers {
